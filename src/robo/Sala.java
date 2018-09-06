@@ -5,23 +5,24 @@ package robo;
 	
 	Essa classe deve ser implementada pelo aluno
 */
-public class Sala implements ISala {
-    
+public class Sala implements ISala
+{   
     int [][] posicao;
     
-    public Sala() {
+    public Sala()
+    {
         posicao = new int[TAMANHO_SALA][TAMANHO_SALA];
 
         for (int row = 0; row < TAMANHO_SALA; row ++){
             for (int col = 0; col < TAMANHO_SALA; col++){
                 posicao[row][col] = POSICAO_VAZIA;
-//                System.out.println(posicao[row][col]);
             }
         }
     }
 
     @Override
-    public boolean areaArmazenagem(int x, int y) {
+    public boolean areaArmazenagem(int x, int y)
+    {
             return posicao[x][y] == posicao[X_INICIO_ARM][Y_FIM_ARM] ||
                     posicao[x][y] == posicao[X_FIM_ARM][Y_INICIO_ARM] ||
                     posicao[x][y] == posicao[X_FIM_ARM][Y_FIM_ARM] ||
@@ -29,14 +30,16 @@ public class Sala implements ISala {
     }
 
     @Override
-    public int marcadorEm(int x, int y) {
+    public int marcadorEm(int x, int y)
+    {
         return posicao[x][y];
     }
 
     @Override
-    public boolean marcaPosicaoArmazenagem(int x, int y) {
-        if (areaArmazenagem(x, y) && posicao[x][y] == POSICAO_VAZIA){
-            posicao[x][y] = BLOCO_PRESENTE;
+    public boolean marcaPosicaoArmazenagem(int x, int y)
+    {
+        if (areaArmazenagem(x, y) && posicao[x][y] == POSICAO_VAZIA) {
+            posicao[x][y] = BLOCO_PRESENTE;         
             
             return true;
         }
@@ -45,8 +48,9 @@ public class Sala implements ISala {
     }
 
     @Override
-    public boolean marcaPosicaoBusca(int x, int y, int marcador) {
-        if (posicaoBuscaValida(x, y)){
+    public boolean marcaPosicaoBusca(int x, int y, int marcador)
+    {
+        if (posicaoBuscaValida(x, y)) {
             posicao[x][y] = marcador; 
             
             return true;
@@ -54,14 +58,16 @@ public class Sala implements ISala {
     }
 
     @Override
-    public boolean posicaoBuscaValida(int x, int y) {
+    public boolean posicaoBuscaValida(int x, int y)
+    {
         return (x >= 0 && x < 10) && (y >= 0 && y < 10);
     }
 
     @Override
-    public void removeMarcador(int marcador) {
-        for (int row = 0; row < TAMANHO_SALA; row ++){
-            for (int col = 0; col < TAMANHO_SALA; col++){
+    public void removeMarcador(int marcador)
+    {
+        for (int row = 0; row < TAMANHO_SALA; row ++) {
+            for (int col = 0; col < TAMANHO_SALA; col++) {
                 if (posicao[row][col] == marcador)
                     posicao[row][col] = POSICAO_VAZIA;
             }
@@ -69,8 +75,9 @@ public class Sala implements ISala {
     }
 
     @Override
-    public void removeMarcador(int x, int y) {
-        if (posicao[x][y] != OBSTACULO_PRESENTE && posicaoBuscaValida(x, y)){
+    public void removeMarcador(int x, int y)
+    {
+        if (posicao[x][y] != OBSTACULO_PRESENTE && posicaoBuscaValida(x, y)) {
             posicao[x][y] = POSICAO_VAZIA;
         }
             
