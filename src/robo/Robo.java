@@ -42,6 +42,8 @@ public class Robo implements IRobo
     public Mensageiro mensageiro;
 
     public Sala sala;
+    
+    private boolean backtracked = false;
 
     /**
      * Construtor padrão para o robô *
@@ -110,8 +112,9 @@ public class Robo implements IRobo
             } else if (podeIrOeste()) {
                 x--;                  
             } else {
-                mensageiro.msgNaoAchou();
-                return;
+                backtracking();
+//                mensageiro.msgNaoAchou();
+//                return;
             }
         }
             retornarBase();
@@ -159,11 +162,17 @@ public class Robo implements IRobo
     {
         if (sala.posicaoBuscaValida(x, y + 1) 
                 && sala.marcadorEm(x, y + 1) == Sala.OBSTACULO_PRESENTE) {
+            if (backtracked) {
+                backtracked = false;
+            }else{
             mensageiro.mensagem(Mensageiro.OBSTACULO, x, y + 1);
-            
+            backtracked = false;
+            }
             return false;
         }
-            
+        
+        backtracked = false;
+        
         return sala.posicaoBuscaValida(x, y + 1) 
                 && (sala.marcadorEm(x, y + 1) == Sala.POSICAO_VAZIA 
                 || sala.marcadorEm(x, y + 1) == Sala.BLOCO_PRESENTE);
@@ -173,10 +182,16 @@ public class Robo implements IRobo
     {
         if (sala.posicaoBuscaValida(x + 1, y) 
                 && sala.marcadorEm(x + 1, y) == Sala.OBSTACULO_PRESENTE) {
+            if (backtracked) {
+                backtracked = false;
+            }else{
             mensageiro.mensagem(Mensageiro.OBSTACULO, x + 1, y);
-            
+            backtracked = false;
+            }
             return false;
         }
+        
+        backtracked = false;
         
         return sala.posicaoBuscaValida(x + 1, y) 
                 && (sala.marcadorEm(x + 1, y) == Sala.POSICAO_VAZIA 
@@ -187,10 +202,15 @@ public class Robo implements IRobo
     {
         if (sala.posicaoBuscaValida(x, y - 1) 
                 && sala.marcadorEm(x, y - 1) == Sala.OBSTACULO_PRESENTE) {
+            if (backtracked) {
+                backtracked = false;
+            }else{
             mensageiro.mensagem(Mensageiro.OBSTACULO, x, y - 1);
-            
-            return false;
+            backtracked = false;
+            }
         }
+        
+        backtracked = false;
         
         return sala.posicaoBuscaValida(x, y - 1) 
                 && (sala.marcadorEm(x, y - 1) == Sala.POSICAO_VAZIA 
@@ -200,11 +220,16 @@ public class Robo implements IRobo
     private boolean podeIrOeste()
     {
         if (sala.posicaoBuscaValida(x - 1, y) 
-                && sala.marcadorEm(x - 1, y) == Sala.OBSTACULO_PRESENTE) {
+                && sala.marcadorEm(x - 1, y) == Sala.OBSTACULO_PRESENTE ) {
+            if (backtracked) {
+                backtracked = false;
+            }else{
             mensageiro.mensagem(Mensageiro.OBSTACULO, x - 1, y);
-            
-            return false;
+            backtracked = false;
+            }
         }
+        
+        backtracked = false;
         
         return sala.posicaoBuscaValida(x - 1, y) 
                 && (sala.marcadorEm(x - 1, y) == Sala.POSICAO_VAZIA 
@@ -232,5 +257,26 @@ public class Robo implements IRobo
                 mensageiro.mensagem(Mensageiro.RETORNO, x, y);
             }
         }
+    }
+    
+    private void backtracking()
+    {
+        LinkedList<String> backtracking = mensageiro.mensagens();
+        backtracked = true;
+        if (!backtracking.isEmpty() 
+                && backtracking.getLast().contentEquals("1," + x + "," + y)) {
+            backtracking.pollLast();
+            String penultimoPasso = backtracking.pollLast();
+            x = Character.getNumericValue(penultimoPasso.charAt(2));
+            y = Character.getNumericValue(penultimoPasso.charAt(4));
+            backtracking.add(1 + "," + x + ","+ y);
+            mensageiro.mensagem(Mensageiro.RETORNO, x, y);
+        } else if (!backtracking.isEmpty()) {
+            String penultimoPasso = backtracking.pollLast();
+            x = Character.getNumericValue(penultimoPasso.charAt(2));
+            y = Character.getNumericValue(penultimoPasso.charAt(4));
+            backtracking.add(1 + "," + x + ","+ y);
+            mensageiro.mensagem(Mensageiro.RETORNO, x, y);
+        }      
     }
 }
