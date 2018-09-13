@@ -23,10 +23,7 @@ public class Sala implements ISala
     @Override
     public boolean areaArmazenagem(int x, int y)
     {
-            return posicao[x][y] == posicao[X_INICIO_ARM][Y_FIM_ARM] ||
-                    posicao[x][y] == posicao[X_FIM_ARM][Y_INICIO_ARM] ||
-                    posicao[x][y] == posicao[X_FIM_ARM][Y_FIM_ARM] ||
-                    posicao[x][y] == posicao[X_INICIO_ARM][Y_INICIO_ARM];
+            return x <= 1 && y <= 1;
     }
 
     @Override
@@ -60,7 +57,7 @@ public class Sala implements ISala
     @Override
     public boolean posicaoBuscaValida(int x, int y)
     {
-        return (x >= 0 && x < 10) && (y >= 0 && y < 10);
+        return ((x >= 0 && x < 10) && (y >= 0 && y < 10) && !areaArmazenagem(x,y));
     }
 
     @Override
