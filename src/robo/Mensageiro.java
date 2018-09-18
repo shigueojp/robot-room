@@ -5,11 +5,11 @@ import java.util.LinkedList;
 
 public class Mensageiro
 {
-    static int ARMAZENAGEM = 0;
-    static int BUSCA = 1;
-    static int CAPTURA = 2;
-    static int OBSTACULO = 3;
-    static int RETORNO = 4;
+    static int ARMAZENAGEM = 4;
+    static int BUSCA = 0;
+    static int CAPTURA = 3;
+    static int OBSTACULO = 2;
+    static int RETORNO = 1;
 
     private LinkedList log;
     private LinkedList backtracking;
@@ -19,6 +19,11 @@ public class Mensageiro
         log = new LinkedList();
         backtracking = new LinkedList();
     }
+
+    public java.util.LinkedList<java.lang.String> getBacktracking() {
+        return backtracking;
+    }
+    
     
     public void imprimeMensagens()
     {

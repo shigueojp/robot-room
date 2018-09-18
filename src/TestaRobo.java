@@ -8,24 +8,24 @@ public class TestaRobo {
 		Testes com o robô
 	*/
 	public static void main(String[] args) {
-//		/* teste 1 - OK */
-//		IRobo robo = new Robo();
-//		
-//		robo.adicionaBloco(1,2);
-//		
-//		robo.adicionaBloco(2,1);
-//		
-//		robo.adicionaBloco(5,5);
-//		
-//		robo.adicionaBloco(9,9);
-//		
-//		robo.adicionaObstaculo(2,0);
-//		
-//		robo.adicionaObstaculo(3,2);
-//
-//		robo.buscaBlocos();
-//		
-//		robo.mensageiro().imprimeMensagens();
+		/* teste 1 - OK */
+		IRobo robo = new Robo();
+		
+		robo.adicionaBloco(1,2);
+		
+		robo.adicionaBloco(2,1);
+		
+		robo.adicionaBloco(5,5);
+		
+		robo.adicionaBloco(9,9);
+		
+		robo.adicionaObstaculo(2,0);
+		
+		robo.adicionaObstaculo(3,2);
+
+		robo.buscaBlocos();
+		
+		robo.mensageiro().imprimeMensagens();
 		
 	
 		/*teste 2 - Número inferior de blocos */
@@ -66,18 +66,18 @@ public class TestaRobo {
 //		robo.buscaBlocos(); 
 //		
 //		robo.mensageiro().imprimeMensagens();
-                
+//                
                 /* teste 4 - Ilustração do backtracking */
-		IRobo robo = new Robo();
-		
-		robo.adicionaObstaculo(0,6);
-		
-		robo.adicionaObstaculo(1,4);
-		
-		robo.adicionaObstaculo(1,5);
-		
-		robo.buscaBlocos(); 
-		
-		robo.mensageiro().imprimeMensagens();
+//		IRobo robo = new Robo();
+//		
+//		robo.adicionaObstaculo(0,6);
+//		
+//		robo.adicionaObstaculo(1,4);
+//		
+//		robo.adicionaObstaculo(1,5);
+//		
+//		robo.buscaBlocos(); 
+//		
+//		robo.mensageiro().imprimeMensagens();
 	}
 }

@@ -2,30 +2,19 @@ package robo;
 
 import java.util.LinkedList;
 
+/*********************************************************************/
+/** ACH 2002 - Introducao à Análise de Algoritmos                   **/
+/** EACH-USP - Segundo Semestre de 2018                             **/
+/**                                                                 **/
+/** Victor Shigueo Okuhama 10724052                                 **/
+/**                                                                 **/
+/*********************************************************************/
+
 /**
- * ******************************************************************
- */
-/**
- * ACH 2002 - Introducao à Análise de Algoritmos                   *
- */
-/**
- * EACH-USP - Segundo Semestre de 2018                             *
- */
-/**
- * **//*** <Victor Shigueo Okuhama> <10724052>                             *
- */
-/**
- * *
- */
-/**
- * ******************************************************************
- */
-/**
- * Classe que implementa os movimentos do robô.
- */
+	Classe que implementa os movimentos do robô.
+*/
 public class Robo implements IRobo
 {
-
     /**
      * Coordenada x de início da busca
      */
@@ -44,6 +33,7 @@ public class Robo implements IRobo
     public Sala sala;
     
     private boolean backtracked = false;
+    private int teste;
 
     /**
      * Construtor padrão para o robô *
@@ -54,10 +44,11 @@ public class Robo implements IRobo
         sala = new Sala();
     }
 
-    // Aqui você deve completar seu código
     /**
      * Retorna instância do mensageiro do robô
+     * @return 
      */
+    @Override
     public Mensageiro mensageiro()
     {
         return (this.mensageiro);
@@ -82,7 +73,8 @@ public class Robo implements IRobo
         if (sala.marcadorEm(x, y) == Sala.POSICAO_VAZIA) {
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
             sala.posicao[x][y] = Sala.MARCA_PRESENTE;
-
+            teste = 0;
+            
             return false;
         }
         
@@ -91,8 +83,8 @@ public class Robo implements IRobo
             sala.posicao[x][y] = Sala.MARCA_PRESENTE;
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
             mensageiro.mensagem(Mensageiro.CAPTURA, x, y);
-            System.out.println("PERCORRI NA POSICAO X:" + x + " Y:" + y + " E ACHEI UM BLOCO");
-
+            System.out.println("PERCORRI NA POSICAO X:" + x + " Y:" + y + " E ACHEI E CAPTUREI UM BLOCO");
+            
             return true;
         }
 
@@ -103,7 +95,10 @@ public class Robo implements IRobo
     public void buscaBlocos()
     {
         while (!buscaBloco(x, y)) {
-//                Verificar se pode ir para o norte, se nao ir para o leste se possivel, se nao ir para sul se possivel ou entao ir a esquerda;
+            //Verificar se pode ir para o norte, 
+            //se nao ir para o leste se possivel, 
+            //se nao ir para sul se possivel ou entao ir a esquerda; 
+            //se nao backtrack
             if (podeIrNorte()) {
                 y++;
             } else if (podeIrLeste()) {
@@ -117,13 +112,12 @@ public class Robo implements IRobo
                     mensageiro.msgNaoAchou();
                     
                     return;
-                }
-                
+                }          
             }
         }
             retornarBase();
             
-            if ( guardaBloco() )
+            if (guardaBloco())
                 novaBusca();
             else
                 mensageiro.msgFim();
@@ -164,18 +158,29 @@ public class Robo implements IRobo
 
     private boolean podeIrNorte()
     {
+        /*Se tiver obstaculo faça isso */
         if (sala.posicaoBuscaValida(x, y + 1) 
                 && sala.marcadorEm(x, y + 1) == Sala.OBSTACULO_PRESENTE) {
-            if (backtracked) {
-                backtracked = false;
-            } else {
+            if (!backtracked) {
                 mensageiro.mensagem(Mensageiro.OBSTACULO, x, y + 1);
             }
+            
+//            if (backtracked && teste < 3) {
+//                mensageiro.mensagem(Mensageiro.OBSTACULO, x, y + 1);
+//                teste++;
+//            }
             
             return false;
         }
         
-        backtracked = false;
+        /*Se tiver posicao vaga faça isso */
+        if (sala.posicaoBuscaValida(x, y + 1) 
+                && (sala.marcadorEm(x, y + 1) == Sala.POSICAO_VAZIA 
+                || sala.marcadorEm(x, y + 1) == Sala.BLOCO_PRESENTE)){
+            backtracked = false;
+            System.out.println("Fui para NORTE (Y+1) X: " + x + "Y: " + y);
+            return true;
+        }
         
         return sala.posicaoBuscaValida(x, y + 1) 
                 && (sala.marcadorEm(x, y + 1) == Sala.POSICAO_VAZIA 
@@ -184,18 +189,30 @@ public class Robo implements IRobo
 
     private boolean podeIrLeste()
     {
+        /*Se tiver obstaculo faça isso */
         if (sala.posicaoBuscaValida(x + 1, y) 
                 && sala.marcadorEm(x + 1, y) == Sala.OBSTACULO_PRESENTE) {
-            if (backtracked) {
-                backtracked = false;
-            } else {
+            if (!backtracked) {  
+                mensageiro.mensagem(Mensageiro.OBSTACULO, x + 1, y);             
+            }
+            
+            if (backtracked && teste < 3) {
                 mensageiro.mensagem(Mensageiro.OBSTACULO, x + 1, y);
+                teste++;
             }
             
             return false;
         }
+        /*Se tiver posicao vaga faça isso */
+        if (sala.posicaoBuscaValida(x + 1, y) 
+                && (sala.marcadorEm(x + 1, y) == Sala.POSICAO_VAZIA 
+                || sala.marcadorEm(x + 1, y) == Sala.BLOCO_PRESENTE)){
+            backtracked = false;
+            System.out.println("Fui para Leste (x+1) X: " + x + "Y: " + y);
+            return true;
+        }
         
-        backtracked = false;
+        
         
         return sala.posicaoBuscaValida(x + 1, y) 
                 && (sala.marcadorEm(x + 1, y) == Sala.POSICAO_VAZIA 
@@ -204,18 +221,28 @@ public class Robo implements IRobo
 
     private boolean podeIrSul()
     {
+        /*Se tiver obstaculo faça isso */
         if (sala.posicaoBuscaValida(x, y - 1) 
                 && sala.marcadorEm(x, y - 1) == Sala.OBSTACULO_PRESENTE) {
-            if (backtracked) {
-                backtracked = false;
-            } else {
-                mensageiro.mensagem(Mensageiro.OBSTACULO, x, y - 1);
+            if (!backtracked) {
+               mensageiro.mensagem(Mensageiro.OBSTACULO, x, y - 1);
             }
             
+            if (backtracked && teste < 3) {
+                mensageiro.mensagem(Mensageiro.OBSTACULO, x, y - 1);
+                teste++;
+            }
+
             return false;
         }
-        
-        backtracked = false;
+        /*Se tiver posicao vaga faça isso */
+        if (sala.posicaoBuscaValida(x, y - 1) 
+                && (sala.marcadorEm(x, y - 1) == Sala.POSICAO_VAZIA 
+                || sala.marcadorEm(x, y - 1) == Sala.BLOCO_PRESENTE)){
+            backtracked = false;
+            System.out.println("Fui para OESTE (x-1) X: " + x + "Y: " + y);
+            return true;
+        }
         
         return sala.posicaoBuscaValida(x, y - 1) 
                 && (sala.marcadorEm(x, y - 1) == Sala.POSICAO_VAZIA 
@@ -224,18 +251,28 @@ public class Robo implements IRobo
 
     private boolean podeIrOeste()
     {
+        /*Se tiver obstaculo faça isso */
         if (sala.posicaoBuscaValida(x - 1, y) 
                 && sala.marcadorEm(x - 1, y) == Sala.OBSTACULO_PRESENTE ) {
-            if (backtracked) {
-                backtracked = false;
-            } else {
+            if (!backtracked) {
                 mensageiro.mensagem(Mensageiro.OBSTACULO, x - 1, y);
             }
             
+            if (backtracked && teste < 3) {
+                mensageiro.mensagem(Mensageiro.OBSTACULO, x - 1, y);
+                teste++;
+            }
+
             return false;
         }      
-        
-        backtracked = false;
+        /*Se tiver posicao vaga faça isso */
+        if (sala.posicaoBuscaValida(x - 1, y) 
+                && (sala.marcadorEm(x - 1, y) == Sala.POSICAO_VAZIA 
+                || sala.marcadorEm(x - 1, y) == Sala.BLOCO_PRESENTE)){
+            backtracked = false;
+            
+            return true;
+        }
         
         return sala.posicaoBuscaValida(x - 1, y) 
                 && (sala.marcadorEm(x - 1, y) == Sala.POSICAO_VAZIA 
@@ -244,22 +281,23 @@ public class Robo implements IRobo
 
     private void retornarBase() 
     {
-        LinkedList<String> backtracking = mensageiro.mensagens();
-        
-        while ((x != ISala.X_INICIO_ARM) || (y != ISala.Y_FIM_ARM + 1)) {          
+        LinkedList<java.lang.String> backtracking = mensageiro.getBacktracking();
+        System.out.println("x:" + x + " y:" + y);
+        while ( x != ISala.X_INICIO_ARM || y != ISala.Y_FIM_ARM + 1) {          
             if (!backtracking.isEmpty() 
-                    && backtracking.getLast().contentEquals("1," + x + "," + y)) {
+                    && backtracking.getLast().contentEquals("0," + x + "," + y)) {
                 backtracking.pollLast();
                 String penultimoPasso = backtracking.pollLast();
                 x = Character.getNumericValue(penultimoPasso.charAt(2));
                 y = Character.getNumericValue(penultimoPasso.charAt(4));
-
+                System.out.println("Voltando para posicao x:" + x + " y:" + y);    
                 mensageiro.mensagem(Mensageiro.RETORNO, x, y);
             } else if (!backtracking.isEmpty()) {
+                System.out.println(backtracking);
                 String penultimoPasso = backtracking.pollLast();
                 x = Character.getNumericValue(penultimoPasso.charAt(2));
                 y = Character.getNumericValue(penultimoPasso.charAt(4));
-
+                System.out.println("Voltando para posicao x:" + x + " y:" + y);        
                 mensageiro.mensagem(Mensageiro.RETORNO, x, y);
             }
         }
@@ -267,31 +305,35 @@ public class Robo implements IRobo
     
     private boolean backtracking()
     {
-        LinkedList<String> backtracking = mensageiro.mensagens();
-        
-        
+        LinkedList<String> backtracking = mensageiro.mensagens();       
+        System.out.println("RETORNO ADS X: " + x + "Y: " + y);
+        System.out.println(backtracking.getLast());
         if (!backtracking.isEmpty() 
-                && backtracking.getLast().contentEquals("1," + x + "," + y)) {           
+                && backtracking.getLast().contentEquals("0," + x + "," + y)) {           
             backtracking.pollLast();
+            
             if (backtracking.isEmpty())
                 return false;
+            
             String penultimoPasso = backtracking.pollLast();
-            System.out.println(backtracking.size());
-            backtracked = true;
+            backtracked = true;          
             
             x = Character.getNumericValue(penultimoPasso.charAt(2));
             y = Character.getNumericValue(penultimoPasso.charAt(4));
-            backtracking.add(1 + "," + x + ","+ y);
-//            mensageiro.mensagem(Mensageiro.RETORNO, x, y);
+//            backtracking.add(1 + "," + x + ","+ y);
+//            mensageiro.mensagem(Mensageiro.RETORNO, x, y);           
         } else if (!backtracking.isEmpty()) {
-            String penultimoPasso = backtracking.pollLast();
-            x = Character.getNumericValue(penultimoPasso.charAt(2));
-            y = Character.getNumericValue(penultimoPasso.charAt(4));
-            backtracking.add(1 + "," + x + ","+ y);
-//            mensageiro.mensagem(Mensageiro.RETORNO, x, y);
-            
-            backtracked = true;
-        }      
+//                System.out.println(backtracking);
+                String penultimoPasso = backtracking.pollLast();
+                
+                if (backtracking.isEmpty())
+                    return false;
+                
+                x = Character.getNumericValue(penultimoPasso.charAt(2));
+                y = Character.getNumericValue(penultimoPasso.charAt(4));
+                System.out.println("Voltando para posicao x:" + x + " y:" + y);        
+//                mensageiro.mensagem(Mensageiro.RETORNO, x, y);
+            }   
         
         return true;
     }

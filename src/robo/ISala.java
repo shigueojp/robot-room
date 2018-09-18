@@ -3,9 +3,9 @@ package robo;
 public interface ISala
 {
     static int BLOCO_PRESENTE = 3;
-    static int MARCA_PRESENTE = 4;
-    static int OBSTACULO_PRESENTE = 5;
-    static int POSICAO_VAZIA = 1;
+    static int MARCA_PRESENTE = 1;
+    static int OBSTACULO_PRESENTE = 2;
+    static int POSICAO_VAZIA = 0;
     static int TAMANHO_SALA = 10;
     static int X_INICIO_ARM = 0;
     static int X_FIM_ARM = 1;

@@ -1,7 +1,7 @@
 package robo;
 
 public interface IRobo {
-    static int N_BLOCOS = 100;
+    static int N_BLOCOS = 4;
     
     void adicionaBloco(int x, int y);
     
