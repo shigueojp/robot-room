@@ -15,28 +15,26 @@ import java.util.LinkedList;
 */
 public class Robo implements IRobo
 {
-    /**
-     * Coordenada x de início da busca
-     */
     private static int x = ISala.X_INICIO_ARM;
 
-    /**
-     * Coordenada y de início da busca
-     */
     private static int y = ISala.Y_FIM_ARM + 1;
 
     /**
-     * Mensageiro do robô *
+     *
      */
     public Mensageiro mensageiro;
 
+    /**
+     *
+     */
     public Sala sala;
     
     private boolean backtracked = false;
+    
     private int teste;
 
     /**
-     * Construtor padrão para o robô *
+     *
      */
     public Robo()
     {
@@ -45,8 +43,8 @@ public class Robo implements IRobo
     }
 
     /**
-     * Retorna instância do mensageiro do robô
-     * @return 
+     *
+     * @return
      */
     @Override
     public Mensageiro mensageiro()
@@ -54,18 +52,34 @@ public class Robo implements IRobo
         return (this.mensageiro);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     @Override
     public void adicionaBloco(int x, int y)
     {
         sala.posicao[x][y] = Sala.BLOCO_PRESENTE;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     @Override
     public void adicionaObstaculo(int x, int y)
     {
         sala.posicao[x][y] = Sala.OBSTACULO_PRESENTE;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     @Override
     public boolean buscaBloco(int x, int y)
     {   
@@ -83,7 +97,7 @@ public class Robo implements IRobo
             sala.posicao[x][y] = Sala.MARCA_PRESENTE;
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
             mensageiro.mensagem(Mensageiro.CAPTURA, x, y);
-            System.out.println("PERCORRI NA POSICAO X:" + x + " Y:" + y + " E ACHEI E CAPTUREI UM BLOCO");
+//            System.out.println("PERCORRI NA POSICAO X:" + x + " Y:" + y + " E ACHEI E CAPTUREI UM BLOCO");
             
             return true;
         }
@@ -91,6 +105,9 @@ public class Robo implements IRobo
         return false;
     }
 
+    /**
+     *
+     */
     @Override
     public void buscaBlocos()
     {
@@ -123,6 +140,10 @@ public class Robo implements IRobo
                 mensageiro.msgFim();
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean guardaBloco()
     {
@@ -149,6 +170,9 @@ public class Robo implements IRobo
         return !(armazenagemX.isEmpty() && armazenagemY.isEmpty()); 
     }
 
+    /**
+     *
+     */
     @Override
     public void novaBusca()
     {
@@ -165,11 +189,6 @@ public class Robo implements IRobo
                 mensageiro.mensagem(Mensageiro.OBSTACULO, x, y + 1);
             }
             
-//            if (backtracked && teste < 3) {
-//                mensageiro.mensagem(Mensageiro.OBSTACULO, x, y + 1);
-//                teste++;
-//            }
-            
             return false;
         }
         
@@ -178,7 +197,7 @@ public class Robo implements IRobo
                 && (sala.marcadorEm(x, y + 1) == Sala.POSICAO_VAZIA 
                 || sala.marcadorEm(x, y + 1) == Sala.BLOCO_PRESENTE)){
             backtracked = false;
-            System.out.println("Fui para NORTE (Y+1) X: " + x + "Y: " + y);
+//            System.out.println("Fui para NORTE (Y+1) X: " + x + "Y: " + y);
             return true;
         }
         
@@ -208,7 +227,7 @@ public class Robo implements IRobo
                 && (sala.marcadorEm(x + 1, y) == Sala.POSICAO_VAZIA 
                 || sala.marcadorEm(x + 1, y) == Sala.BLOCO_PRESENTE)){
             backtracked = false;
-            System.out.println("Fui para Leste (x+1) X: " + x + "Y: " + y);
+//            System.out.println("Fui para Leste (x+1) X: " + x + "Y: " + y);
             return true;
         }
         
@@ -240,7 +259,7 @@ public class Robo implements IRobo
                 && (sala.marcadorEm(x, y - 1) == Sala.POSICAO_VAZIA 
                 || sala.marcadorEm(x, y - 1) == Sala.BLOCO_PRESENTE)){
             backtracked = false;
-            System.out.println("Fui para OESTE (x-1) X: " + x + "Y: " + y);
+//            System.out.println("Fui para OESTE (x-1) X: " + x + "Y: " + y);
             return true;
         }
         
@@ -281,23 +300,24 @@ public class Robo implements IRobo
 
     private void retornarBase() 
     {
-        LinkedList<java.lang.String> backtracking = mensageiro.getBacktracking();
-        System.out.println("x:" + x + " y:" + y);
-        while ( x != ISala.X_INICIO_ARM || y != ISala.Y_FIM_ARM + 1) {          
+        LinkedList<java.lang.String> backtracking = mensageiro.mensagens();   
+//        System.out.println("x:" + x + " y:" + y);
+        while ( x != ISala.X_INICIO_ARM || y != ISala.Y_FIM_ARM + 1) {
+//            System.out.println("x:" + x + " y:" + y);
             if (!backtracking.isEmpty() 
-                    && backtracking.getLast().contentEquals("0," + x + "," + y)) {
+                    && backtracking.getLast().contentEquals(Mensageiro.BUSCA + "," + x + "," + y)) {
                 backtracking.pollLast();
                 String penultimoPasso = backtracking.pollLast();
                 x = Character.getNumericValue(penultimoPasso.charAt(2));
                 y = Character.getNumericValue(penultimoPasso.charAt(4));
-                System.out.println("Voltando para posicao x:" + x + " y:" + y);    
+//                System.out.println("Voltando para posicao x:" + x + " y:" + y);    
                 mensageiro.mensagem(Mensageiro.RETORNO, x, y);
             } else if (!backtracking.isEmpty()) {
-                System.out.println(backtracking);
+//                System.out.println(backtracking);
                 String penultimoPasso = backtracking.pollLast();
                 x = Character.getNumericValue(penultimoPasso.charAt(2));
                 y = Character.getNumericValue(penultimoPasso.charAt(4));
-                System.out.println("Voltando para posicao x:" + x + " y:" + y);        
+//                System.out.println("Voltando para posicao x:" + x + " y:" + y);        
                 mensageiro.mensagem(Mensageiro.RETORNO, x, y);
             }
         }
@@ -305,18 +325,18 @@ public class Robo implements IRobo
     
     private boolean backtracking()
     {
-        LinkedList<String> backtracking = mensageiro.mensagens();       
-        System.out.println("RETORNO ADS X: " + x + "Y: " + y);
+        LinkedList<String> backtracking = mensageiro.mensagens();
+//        System.out.println("RETORNO ADS X: " + x + "Y: " + y);
         System.out.println(backtracking.getLast());
         if (!backtracking.isEmpty() 
-                && backtracking.getLast().contentEquals("0," + x + "," + y)) {           
+                && backtracking.getLast().contentEquals(Mensageiro.BUSCA + "," + x + "," + y)) {
             backtracking.pollLast();
             
             if (backtracking.isEmpty())
                 return false;
             
             String penultimoPasso = backtracking.pollLast();
-            backtracked = true;          
+            backtracked = true;
             
             x = Character.getNumericValue(penultimoPasso.charAt(2));
             y = Character.getNumericValue(penultimoPasso.charAt(4));
@@ -324,16 +344,18 @@ public class Robo implements IRobo
 //            mensageiro.mensagem(Mensageiro.RETORNO, x, y);           
         } else if (!backtracking.isEmpty()) {
 //                System.out.println(backtracking);
-                String penultimoPasso = backtracking.pollLast();
-                
-                if (backtracking.isEmpty())
+            String penultimoPasso = backtracking.pollLast();
+
+            if (backtracking.isEmpty()){
                     return false;
-                
-                x = Character.getNumericValue(penultimoPasso.charAt(2));
-                y = Character.getNumericValue(penultimoPasso.charAt(4));
-                System.out.println("Voltando para posicao x:" + x + " y:" + y);        
+            }
+
+            backtracked = true;
+            x = Character.getNumericValue(penultimoPasso.charAt(2));
+            y = Character.getNumericValue(penultimoPasso.charAt(4));
+//            System.out.println("DASDASDASDSD x:" + x + " y:" + y);
 //                mensageiro.mensagem(Mensageiro.RETORNO, x, y);
-            }   
+        }   
         
         return true;
     }
