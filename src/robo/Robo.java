@@ -32,6 +32,8 @@ public class Robo implements IRobo
     private boolean backtracked = false;
     
     private int teste;
+    
+    private LinkedList<java.lang.String> backtracking;
 
     /**
      *
@@ -40,6 +42,7 @@ public class Robo implements IRobo
     {
         mensageiro = new Mensageiro();
         sala = new Sala();
+        backtracking = new LinkedList();
     }
 
     /**
@@ -87,6 +90,8 @@ public class Robo implements IRobo
         if (sala.marcadorEm(x, y) == Sala.POSICAO_VAZIA) {
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
             sala.posicao[x][y] = Sala.MARCA_PRESENTE;
+            backtracking.add(Mensageiro.BUSCA + "," + x + ","+ y);
+            sala.marcaPosicaoBusca(x, y, Sala.MARCA_PRESENTE);
             teste = 0;
             
             return false;
@@ -95,7 +100,9 @@ public class Robo implements IRobo
         /* Ao buscar o bloco na posicao[x][y] verifica se existe o bloco*/
         if (sala.marcadorEm(x, y) == Sala.BLOCO_PRESENTE) {
             sala.posicao[x][y] = Sala.MARCA_PRESENTE;
+//            sala.marcaPosicaoBusca(x, y, Sala.MARCA_PRESENTE);
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
+            backtracking.add(Mensageiro.BUSCA + "," + x + ","+ y);
             mensageiro.mensagem(Mensageiro.CAPTURA, x, y);
 //            System.out.println("PERCORRI NA POSICAO X:" + x + " Y:" + y + " E ACHEI E CAPTUREI UM BLOCO");
             
@@ -299,8 +306,7 @@ public class Robo implements IRobo
     }
 
     private void retornarBase() 
-    {
-        LinkedList<java.lang.String> backtracking = mensageiro.mensagens();   
+    { 
 //        System.out.println("x:" + x + " y:" + y);
         while ( x != ISala.X_INICIO_ARM || y != ISala.Y_FIM_ARM + 1) {
 //            System.out.println("x:" + x + " y:" + y);
@@ -325,7 +331,6 @@ public class Robo implements IRobo
     
     private boolean backtracking()
     {
-        LinkedList<String> backtracking = mensageiro.mensagens();
 //        System.out.println("RETORNO ADS X: " + x + "Y: " + y);
         System.out.println(backtracking.getLast());
         if (!backtracking.isEmpty() 

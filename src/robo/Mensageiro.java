@@ -12,17 +12,17 @@ public class Mensageiro
     static int RETORNO = 1;
 
     private LinkedList log;
-    private LinkedList backtracking;
+//    private LinkedList backtracking;
     
     public Mensageiro()
     {
         log = new LinkedList();
-        backtracking = new LinkedList();
+//        backtracking = new LinkedList();
     }
 
-    public java.util.LinkedList<java.lang.String> getBacktracking() {
-        return backtracking;
-    }
+//    public java.util.LinkedList<java.lang.String> getBacktracking() {
+//        return backtracking;
+//    }
     
     
     public void imprimeMensagens()
@@ -42,7 +42,7 @@ public class Mensageiro
     {
         if (tipo == BUSCA) { 
             log.add("Busca em " + "(" + x + "," + y + ")");
-            backtracking.add(tipo + "," + x + ","+ y);
+//            backtracking.add(tipo + "," + x + ","+ y);
         }
         
         if (tipo == OBSTACULO) {
@@ -65,7 +65,7 @@ public class Mensageiro
     
     java.util.LinkedList<java.lang.String> mensagens()
     {          
-        return backtracking;
+        return log;
     }
     
     void msgFim()
