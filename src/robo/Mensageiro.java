@@ -11,12 +11,12 @@ public class Mensageiro
     static int OBSTACULO = 2;
     static int RETORNO = 1;
 
-    private LinkedList log;
+    private final LinkedList <String> log;
 //    private LinkedList backtracking;
     
     public Mensageiro()
     {
-        log = new LinkedList();
+        log = new LinkedList<>();
 //        backtracking = new LinkedList();
     }
 
@@ -59,6 +59,10 @@ public class Mensageiro
         
         if (tipo == RETORNO) {
             log.add("Retorno a " + "(" + x + "," + y + ")");
+        }
+        
+        if (tipo == 159) {
+            log.add("RETORNANDO ATRAVES DA PILHA PARA " + "(" + x + "," + y + ")");
         }
         
     }

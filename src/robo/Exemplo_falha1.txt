@@ -465,6 +465,6 @@ Busca em (3,1)
 Obstáculo detectado em (3,2)
 Busca em (3,0)
 Obstáculo detectado em (2,0)
-Obstáculo detectado em (2,0)
+Obstáculo detectado em (2,0) 
 Obstáculo detectado em (3,2)
 Mais nenhum bloco foi encontrado.
