@@ -63,22 +63,20 @@ public class Robo implements IRobo
     @Override
     public void adicionaBloco(int x, int y)
     {
-        sala.posicao[x][y] = Sala.BLOCO_PRESENTE;
+        sala.marcaPosicaoBusca(x, y, Sala.BLOCO_PRESENTE);
     }
 
     /**
-     *
      * @param x
      * @param y
      */
     @Override
     public void adicionaObstaculo(int x, int y)
     {
-        sala.posicao[x][y] = Sala.OBSTACULO_PRESENTE;
+       sala.marcaPosicaoBusca(x, y, Sala.OBSTACULO_PRESENTE);
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -89,16 +87,15 @@ public class Robo implements IRobo
         /* Ao buscar o bloco na posicao[x][y] verifica se esta vazia*/
         if (sala.marcadorEm(x, y) == Sala.POSICAO_VAZIA) {
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
-            sala.posicao[x][y] = Sala.MARCA_PRESENTE;
-            backtracking.add(Mensageiro.BUSCA + "," + x + ","+ y);
             sala.marcaPosicaoBusca(x, y, Sala.MARCA_PRESENTE);
+            backtracking.add(Mensageiro.BUSCA + "," + x + ","+ y);
             
             return false;
         }
         
         /* Ao buscar o bloco na posicao[x][y] verifica se existe o bloco*/
         if (sala.marcadorEm(x, y) == Sala.BLOCO_PRESENTE) {
-            sala.posicao[x][y] = Sala.MARCA_PRESENTE;
+            sala.marcaPosicaoBusca(x, y, Sala.MARCA_PRESENTE);
             mensageiro.mensagem(Mensageiro.BUSCA, x, y);
             backtracking.add(Mensageiro.BUSCA + "," + x + ","+ y);
             mensageiro.mensagem(Mensageiro.CAPTURA, x, y);
@@ -156,7 +153,7 @@ public class Robo implements IRobo
         
         for (int row = 0; row <= Sala.X_FIM_ARM; row ++) {
             for (int col = 0; col <= Sala.Y_FIM_ARM; col++) {
-                if (sala.posicao[col][row] == Sala.POSICAO_VAZIA) {                    
+                if (sala.marcadorEm(col, row) == Sala.POSICAO_VAZIA) {                    
                     armazenagemX.add(col);
                     armazenagemY.add(row);
                 }
